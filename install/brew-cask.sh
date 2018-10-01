@@ -42,7 +42,7 @@ brew tap caskroom/versions
 #
 # brew cask install "${apps[@]}"
 
-brew bundle install --file=Brewfile-cask --verbose
+brew bundle install --file=~/dotfiles/install/Brewfile-cask --verbose
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package

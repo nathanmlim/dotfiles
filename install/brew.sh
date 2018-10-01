@@ -81,7 +81,7 @@ brew upgrade --all
 # )
 
 #brew install "${apps[@]}"
-brew bundle install --file=Brewfile --verbose
+brew bundle install --file=~/dotfiles/install/Brewfile --verbose
 
 # Remove outdated versions from the cellar
 brew cleanup
