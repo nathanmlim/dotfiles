@@ -1,0 +1,27 @@
+# Completion Plugins
+zsh-users/zsh-completions
+robbyrussell/oh-my-zsh folder:plugins/gitfast
+robbyrussell/oh-my-zsh folder:plugins/git-extras
+robbyrussell/oh-my-zsh folder:plugins/pip
+robbyrussell/oh-my-zsh folder:plugins/python
+robbyrussell/oh-my-zsh folder:plugins/brew
+#robbyrussell/oh-my-zsh folder:plugins/osx
+
+# Color plugins
+gretzky/auto-color-ls
+ael-code/zsh-colored-man-pages
+
+# Git plugins
+denolfe/zsh-travis
+rutchkiwi/copyzshell
+
+# iTerm plugins
+tysonwolker/iterm-tab-colors
+iam4x/zsh-iterm-touchbar
+
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-history-substring-search
+popstas/zsh-command-time
+paulmelnikow/zsh-startup-timer
+trapd00r/zsh-syntax-highlighting-filetypes
+zdharma/fast-syntax-highlighting

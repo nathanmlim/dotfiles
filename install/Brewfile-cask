@@ -1,0 +1,35 @@
+cask_args appdir: "/Applications"
+
+# Fonts
+cask "font-fira-code"
+cask "font-hack-nerd-font"
+cask "font-sourcecodepro-nerd-font"
+cask "font-meslo-nerd-font"
+
+# Google
+cask "google-chrome"
+cask "google-backup-and-sync"
+cask "chrome-remote-desktop"
+
+# Dev
+cask "atom"
+cask "anaconda"
+cask "iterm2"
+cask "xquartz"
+
+# Apps
+cask "evernote"
+cask "alfred"
+cask "appcleaner"
+cask "the-unarchiver"
+cask "vlc"
+cask "slack"
+cask "spark"
+cask "spotify"
+cask "bettertouchtool"
+cask "mtmr"
+
+# VM - Requires manual installation of VirtualBox
+# https://www.virtualbox.org
+#cask "vagrant"
+#cask "vagrant-manager"

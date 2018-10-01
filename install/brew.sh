@@ -15,6 +15,12 @@ fi
 brew tap homebrew/versions
 brew tap homebrew/dupes
 brew tap Goles/battery
+brew tap getantibody/tap
+brew tap homebrew/bundle
+brew tap homebrew/cask
+brew tap homebrew/cask-fonts
+brew tap homebrew/core
+brew tap mas-cli/tap
 
 # Make sure we’re using the latest Homebrew
 brew update
@@ -43,38 +49,39 @@ brew upgrade --all
 # of installing Node directly. This gives me more explicit control over
 # which version I'm using.
 
-apps=(
-    rvm
-    nvm
-    mongodb
-    bash-completion2
-    coreutils
-    moreutils
-    findutils
-    ffmpeg
-    fortune
-    ponysay
-    git
-    git-extras
-    hub
-    gnu-sed --with-default-names
-    grep --with-default-names
-    homebrew/completions/brew-cask-completion
-    homebrew/dupes/grep
-    homebrew/dupes/openssh
-    mtr
-    autojump
-    imagemagick --with-webp
-    python
-    source-highlight
-    the_silver_searcher
-    tree
-    ffmpeg --with-libvpx
-    wget
-    wifi-password
-)
+# apps=(
+#     rvm
+#     nvm
+#     mongodb
+#     bash-completion2
+#     coreutils
+#     moreutils
+#     findutils
+#     ffmpeg
+#     fortune
+#     ponysay
+#     git
+#     git-extras
+#     hub
+#     gnu-sed --with-default-names
+#     grep --with-default-names
+#     homebrew/completions/brew-cask-completion
+#     homebrew/dupes/grep
+#     homebrew/dupes/openssh
+#     mtr
+#     autojump
+#     imagemagick --with-webp
+#     python
+#     source-highlight
+#     the_silver_searcher
+#     tree
+#     ffmpeg --with-libvpx
+#     wget
+#     wifi-password
+# )
 
-brew install "${apps[@]}"
+#brew install "${apps[@]}"
+brew bundle install --file=Brewfile --verbose
 
 # Remove outdated versions from the cellar
 brew cleanup

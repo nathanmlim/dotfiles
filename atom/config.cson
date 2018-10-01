@@ -1,89 +1,143 @@
 "*":
-  autoprefixer: {}
+  "Remote-FTP":
+    enableTransferNotifications: true
+  "atom-beautify":
+    general:
+      _analyticsUserId: "27a113d1-a0aa-4c56-b86e-22db7d3efe16"
+    python:
+      sort_imports: true
+  "atom-ide-ui":
+    "atom-ide-terminal":
+      allowTransparency: true
+      brightCyan: "#419698"
+      brightGreen: "#4f8f00"
+      fontFamily: "SauceCodePro Nerd Mono Complete, Source Code, Hack"
+      green: "#008f00"
+      lineHeight: 1
+  "atom-material-ui":
+    colors:
+      abaseColor: "#2196f3"
+      genAccent: true
+      predefinedColor: "Blue"
+    fonts:
+      fontSize: 14
+    tabs:
+      compactTabs: true
+      noTabMinWidth: true
+      tintedTabBar: true
+    treeView:
+      compactList: true
+    ui:
+      panelContrast: true
+      panelShadows: true
+  "atom-package-deps":
+    ignored: []
+  "autocomplete-python":
+    extraPaths: "/anaconda/lib/python3.6/site-packages;/anaconda/envs/dev/lib/python3.5/site-packages;/home/nathanlim/anaconda3/envs/dev/lib/python3.5/site-packages;/home/limn1/anaconda3/envs/dev/lib/python3.5/site-packages;/home/limn1/anaconda3/lib/python3.5/site-packages"
+    pythonPaths: "/anaconda/bin/python;/home/nathanlim/anaconda3/envs/dev/bin/python;/anaconda/envs/dev/bin/python;/home/limn1/anaconda3/bin/python;/home/limn1/anaconda3/envs/dev/bin/python"
+    useKite: false
+    useSnippets: "required"
   core:
+    allowPendingPaneItems: false
     disabledPackages: [
-      "react"
+      "markdown-preview"
+      "language-gfm"
+      "Hydrogen"
+      "hydrogen-launcher"
+      "hydrogen-python"
+      "linter"
     ]
-    themes: [
-      "one-dark-ui"
-      "cobalt2-syntax"
-    ]
+    packagesWithKeymapsDisabled: []
+    projectHome: "/Users/nathanlim/Github"
+    telemetryConsent: "limited"
   editor:
-    fontFamily: "Menlo"
-    fontSize: 15
-    invisibles:
-      cr: " "
-      eol: " "
-      tab: "⇨"
-    preferredLineLength: 120
+    fontSize: 12
+    showIndentGuide: true
     showInvisibles: true
     softWrap: true
-    softWrapAtPreferredLineLength: true
-    tabType: "soft"
-  emmet: {}
+    tabLength: 4
   "exception-reporting":
-    userId: "0f4e16a3-5040-01ba-b000-a0793a69fb44"
-  "highlight-line":
-    enableBackgroundColor: false
-  jshint:
-    supportLintingJsx: true
-  linter:
-    showErrorPanel: false
-  "markdown-preview":
-    useGitHubStyle: true
+    userId: "85a9c545-0485-f8a8-462f-1a3e7a822733"
+  "git-plus":
+    general:
+      _analyticsUserId: "aadeeeb2-8399-43f5-ade4-1320792ca508"
+  "ide-python":
+    pylsPlugins:
+      autopep8:
+        enabled: false
+      pycodestyle:
+        enabled: false
+      yapf:
+        enabled: true
+  "linter-pycodestyle":
+    maxLineLength: 79
+  "linter-python":
+    executablePath: "/home/nathanlim/anaconda3/bin/pylama"
+    lintTrigger: "File saved or modified"
+    withPyflakes: true
+  "linter-ui-default":
+    panelHeight: 300
+  "markdown-writer":
+    fileExtension: ".md"
+    renameImageOnCopy: true
+    siteImagesDir: "images/"
   minimap:
+    disablePythonDocLinks: true
     plugins:
-      "highlight-selected": true
+      "highlight-selected": false
       "highlight-selectedDecorationsZIndex": 0
-      pigments: true
-      pigmentsDecorationsZIndex: 0
-      selection: true
-      selectionDecorationsZIndex: 0
-  "minimap-selection":
-    highlightCursorsLines: true
-  "one-dark-ui": {}
-  "one-light-ui": {}
-  pigments: {}
-  react: {}
+  "platformio-ide-terminal":
+    ansiColors:
+      normal:
+        blue: "#0433ff"
+        cyan: "#00fdff"
+        green: "#00f900"
+      zBright:
+        brightBlue: "#0433ff"
+    core:
+      autoRunCommand: "source ~/.bash_profile"
+      scrollback: 1000000
+    customTexts: {}
+    style:
+      fontSize: "12"
+      theme: "one-dark"
+    toggles: {}
+  "project-manager":
+    includeGitRepositories: true
+  "python-isort":
+    checkOnSave: false
+  "python-yapf":
+    formatOnSave: true
+    yapfStyle: "{based_on_style: google, column_limit: 119, indent_width: 4, use_tabs: False}"
+  "remote-edit":
+    foldersOnTop: true
+    rememberLastOpenDirectory: true
+  "remote-sync": {}
+  "seti-ui":
+    compactView: true
+  "spell-check":
+    grammars: [
+      "source.asciidoc"
+      "source.gfm"
+      "text.git-commit"
+      "text.plain"
+      "text.plain.null-grammar"
+      "text.tex.latex"
+    ]
+  "split-diff":
+    ignoreWhitespace: true
+    leftEditorColor: "red"
+    rightEditorColor: "green"
+    scrollSyncType: "Vertical + Horizontal"
+    syncHorizontalScroll: true
+  "sync-settings":
+    _lastBackupHash: "e3ec0169ccd5bf85ae017801144aa258fecbc238"
+    gistId: "99272bb54638fb21daf0ddee2f5ef047"
+    personalAccessToken: "065f64b191e90793d00de26c2926d482363c5b53"
+  "terminal-plus":
+    core: {}
+    style:
+      theme: "solid-colors"
   "tree-view": {}
   welcome:
     showOnStartup: false
-".angular.html.text":
-  editor:
-    preferredLineLength: 120
-".cake.source":
-  editor:
-    preferredLineLength: 120
-".cs.source":
-  editor:
-    preferredLineLength: 120
-".csx.source":
-  editor:
-    preferredLineLength: 120
-".git-commit.text":
-  editor:
-    preferredLineLength: 120
-".git-config.source":
-  editor:
-    preferredLineLength: 120
-".git-rebase.text":
-  editor:
-    preferredLineLength: 120
-".js.jsx.react.source":
-  editor:
-    showInvisibles: true
-".js.regexp.replacement.source":
-  editor:
-    preferredLineLength: 120
-".js.regexp.source":
-  editor:
-    preferredLineLength: 120
-".js.source":
-  editor:
-    preferredLineLength: 120
-".json.source":
-  editor:
-    preferredLineLength: 120
-".nant-build.source":
-  editor:
-    preferredLineLength: 120

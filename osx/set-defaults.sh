@@ -7,10 +7,10 @@
 # ~/dotfiles/osx/set-defaults.sh — http://mths.be/osx
 #
 
-# Set computer name
-COMPUTERNAME="Nick Plekhanov's MBP"
-HOSTNAME='mbp'
-LOCALHOSTNAME='mbp'
+# # Set computer name
+# COMPUTERNAME="Nick Plekhanov's MBP"
+# HOSTNAME='mbp'
+# LOCALHOSTNAME='mbp'
 
 # Ask for the administrator password upfront
 sudo -v
