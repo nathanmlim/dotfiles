@@ -43,7 +43,7 @@ fi
 
 # Load the shell dotfiles
 for file in $HOME/.{shell_exports,shell_aliases,shell_functions,shell_config}; do
-  [ -r "$file" ] && [ -f "$file" ] && bash "$file";
+  [ -r "$file" ] && [ -f "$file" ] && . "$file";
 done;
 unset file;
 

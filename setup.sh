@@ -675,7 +675,7 @@ main() {
   defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 
   # Reload zsh settings
-  source ~/.zshrc
+  . ~/.zshrc
 
   # # Update /etc/hosts
   # update_hosts_file
