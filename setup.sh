@@ -632,6 +632,7 @@ main() {
   rm mycron
 
   install_zsh
+  change_shell_to_zsh
 
   # Package managers & packages
   info "$DOTFILES_DIR/install/brew.sh"

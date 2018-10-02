@@ -34,7 +34,7 @@ unset dirs_to_prepend
 export PATH
 
 # Z beats cd most of the time
-. ~/z/z.sh
+bash ~/z/z.sh
 
 # Homebrew completions
 if type brew &>/dev/null; then
@@ -43,7 +43,7 @@ fi
 
 # Load the shell dotfiles
 for file in $HOME/.{shell_exports,shell_aliases,shell_functions,shell_config}; do
-  [ -r "$file" ] && [ -f "$file" ] && source "$file";
+  [ -r "$file" ] && [ -f "$file" ] && bash "$file";
 done;
 unset file;
 
