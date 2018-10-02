@@ -198,8 +198,7 @@ function configure_iterm2() {
 }
 
 function setup_symlinks() {
-    #POWERLINE_ROOT_REPO=/anaconda/lib/python3.6/site-packages
-    #POWERLINE_ROOT_REPO=~/.local/lib/python3.6/site-packages
+    POWERLINE_ROOT_REPO=/usr/local/anaconda3/lib/python3.6/site-packages
     ln -s ${POWERLINE_ROOT_REPO}/scripts/powerline ~/.local/bin
     info "Setting up symlinks..."
     symlink "vim" ${DOTFILES_REPO}/vim/vimrc ~/.vimrc
@@ -655,11 +654,12 @@ main() {
   # Installing powerline-status so that setup_symlinks can setup the symlinks
   # and requests and dotenv as the basis for a regular python script
   export PATH=/usr/local/anaconda3/bin:${PATH}
+  pip install --upgrade pip
   pip_packages=(powerline-status requests python-dotenv flake8)
   pip3_install "${pip_packages[@]}"
 
   # Setting up symlinks so that setup_vim can install all plugins
-  #setup_symlinks
+  setup_symlinks
   # Setting up Vim
   setup_vim
   # Configuring iTerm2
