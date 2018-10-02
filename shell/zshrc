@@ -41,7 +41,6 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
-
 # Load the shell dotfiles
 for file in $HOME/.{shell_exports,shell_aliases,shell_functions,shell_config}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
@@ -72,22 +71,13 @@ zmodload -i zsh/complist
 
 # Source ZSH Plugins
 #source $ZSH/oh-my-zsh.sh
-source $(dirname $(gem which colorls))/tab_complete.sh
-source "${HOME}/dotfiles/zsh/iterm2_shell_integration.zsh"
-
 antibody bundle < ~/dotfiles/zsh/zsh_plugins.txt
+
 
 # Source local extra (private) settings specific to machine if it exists
 [ -f ~/.zsh.local ] && source ~/.zsh.local
 . ~/.local/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
 # Set POWERLEVEL9K themes
 source "$HOME/dotfiles/shell/ztheme"
-
-# npm tab completion
-. <(npm completion)
-
-# fortune: brew install fortune ponysay
-fortune | ponysay
-
-. //anaconda/etc/profile.d/conda.sh
-conda activate
+source $(dirname $(gem which colorls))/tab_complete.sh
+source "${HOME}/dotfiles/zsh/iterm2_shell_integration.zsh"

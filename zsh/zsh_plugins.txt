@@ -1,5 +1,6 @@
 # Completion Plugins
 zsh-users/zsh-completions
+chrissicool/zsh-bash
 robbyrussell/oh-my-zsh folder:plugins/gitfast
 robbyrussell/oh-my-zsh folder:plugins/git-extras
 robbyrussell/oh-my-zsh folder:plugins/pip

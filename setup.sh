@@ -632,7 +632,6 @@ main() {
   rm mycron
 
   install_zsh
-  change_shell_to_zsh
 
   # Package managers & packages
   info "$DOTFILES_DIR/install/brew.sh"
@@ -641,59 +640,59 @@ main() {
       info "$DOTFILES_DIR/install/brew-cask.sh"
   fi
 
-  # Install Zsh settings
-  ln -s ~/dotfiles/zsh/themes/nick.zsh-theme $HOME/.oh-my-zsh/themes
+  # # Install Zsh settings
+  # ln -s ~/dotfiles/zsh/themes/nick.zsh-theme $HOME/.oh-my-zsh/themes
+  #
+  # # Configuring git config file
+  # configure_git
+  # # github.com/rupa/z - hooked up in .zshrc
+  # # consider reusing your current .z file if possible. it's painful to rebuild :)
+  # # or use autojump instead https://github.com/wting/autojump
+  # git clone https://github.com/rupa/z.git ~/z
+  # chmod +x ~/z/z.sh
+  # # Installing powerline-status so that setup_symlinks can setup the symlinks
+  # # and requests and dotenv as the basis for a regular python script
+  # export PATH=/usr/local/anaconda3/bin:${PATH}
+  # pip install --upgrade pip
+  # pip_packages=(powerline-status requests python-dotenv flake8)
+  # pip3_install "${pip_packages[@]}"
 
-  # Configuring git config file
-  configure_git
-  # github.com/rupa/z - hooked up in .zshrc
-  # consider reusing your current .z file if possible. it's painful to rebuild :)
-  # or use autojump instead https://github.com/wting/autojump
-  git clone https://github.com/rupa/z.git ~/z
-  chmod +x ~/z/z.sh
-  # Installing powerline-status so that setup_symlinks can setup the symlinks
-  # and requests and dotenv as the basis for a regular python script
-  export PATH=/usr/local/anaconda3/bin:${PATH}
-  pip install --upgrade pip
-  pip_packages=(powerline-status requests python-dotenv flake8)
-  pip3_install "${pip_packages[@]}"
-
-  # Setting up symlinks so that setup_vim can install all plugins
-  setup_symlinks
-  # Setting up Vim
-  setup_vim
-  # Configuring iTerm2
-  configure_iterm2
-
-  # Only use UTF-8 in Terminal.app
-  defaults write com.apple.terminal StringEncodings -array 4
-
-  # Install the Solarized Dark theme for iTerm
-  open "${HOME}/dotfiles/iterm/themes/Solarized Dark.itermcolors"
-
-  # Don’t display the annoying prompt when quitting iTerm
-  defaults write com.googlecode.iterm2 PromptOnQuit -bool false
+  # # Setting up symlinks so that setup_vim can install all plugins
+  # setup_symlinks
+  # # Setting up Vim
+  # setup_vim
+  # # Configuring iTerm2
+  # configure_iterm2
+  #
+  # # Only use UTF-8 in Terminal.app
+  # defaults write com.apple.terminal StringEncodings -array 4
+  #
+  # # Install the Solarized Dark theme for iTerm
+  # open "${HOME}/dotfiles/iterm/themes/Solarized Dark.itermcolors"
+  #
+  # # Don’t display the annoying prompt when quitting iTerm
+  # defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 
   # Reload zsh settings
   source ~/.zshrc
 
-  # Update /etc/hosts
-  update_hosts_file
-  # Setting up macOS defaults
-  # setup_macOS_defaults
-  #sh osx/set-defaults.sh
-  # Updating login items
-  #update_login_items
-
-  # symlink atom
-  ln -s /Applications/Atom.app/Contents/Resources/app/atom.sh /usr/local/bin/atom
-
-  # Copy over Atom configs
-  cp -r atom/packages.list $HOME/.atom
-
-  # Install community packages
-  apm list --installed --bare - get a list of installed packages
-  apm install --packages-file $HOME/.atom/packages.list
+  # # Update /etc/hosts
+  # update_hosts_file
+  # # Setting up macOS defaults
+  # # setup_macOS_defaults
+  # #sh osx/set-defaults.sh
+  # # Updating login items
+  # #update_login_items
+  #
+  # # symlink atom
+  # ln -s /Applications/Atom.app/Contents/Resources/app/atom.sh /usr/local/bin/atom
+  #
+  # # Copy over Atom configs
+  # cp -r atom/packages.list $HOME/.atom
+  #
+  # # Install community packages
+  # apm list --installed --bare - get a list of installed packages
+  # apm install --packages-file $HOME/.atom/packages.list
 
 
 }
