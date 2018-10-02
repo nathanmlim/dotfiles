@@ -130,7 +130,7 @@ function clone_dotfiles_repo() {
         substep "${DOTFILES_REPO} already exists."
         pull_latest $DOTFILES_REPO
     else
-        url=https://github.com/nathanmlim/dotfiles-1.git
+        url=https://github.com/nathanmlim/dotfiles.git
         if git clone "$url" $DOTFILES_REPO; then
             success "Cloned into ${DOTFILES_REPO}"
         else
@@ -199,7 +199,7 @@ function configure_iterm2() {
 
 function setup_symlinks() {
     #POWERLINE_ROOT_REPO=/anaconda/lib/python3.6/site-packages
-    POWERLINE_ROOT_REPO=~/.local/lib/python3.6/site-packages
+    #POWERLINE_ROOT_REPO=~/.local/lib/python3.6/site-packages
     ln -s ${POWERLINE_ROOT_REPO}/scripts/powerline ~/.local/bin
     info "Setting up symlinks..."
     symlink "vim" ${DOTFILES_REPO}/vim/vimrc ~/.vimrc
@@ -208,8 +208,6 @@ function setup_symlinks() {
         ${POWERLINE_ROOT_REPO}/powerline/config_files
 
 }
-
-
 
 function symlink() {
     application=$1
@@ -307,11 +305,11 @@ function pip3_install() {
 
     for package_to_install in "${packages_to_install[@]}"
     do
-        info "pip3 install ${package_to_install}"
-        if pip3 --quiet show "$package_to_install"; then
+        info "pip install ${package_to_install}"
+        if pip --quiet show "$package_to_install"; then
             success "${package_to_install} already exists."
         else
-            if pip3 install "$package_to_install"; then
+            if pip install "$package_to_install"; then
                 success "Package ${package_to_install} installation succeeded."
             else
                 error "Package ${package_to_install} installation failed."
@@ -321,6 +319,38 @@ function pip3_install() {
     done
 }
 
+function install_zsh () {
+  # Test to see if zshell is installed.  If it is:
+  if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
+    # Install Oh My Zsh if it isn't already present
+    if [[ ! -d $dir/oh-my-zsh/ ]]; then
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    fi
+    # Set the default shell to zsh if it isn't currently set to zsh
+    if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
+      chsh -s $(which zsh)
+    fi
+  else
+    # If zsh isn't installed, get the platform of the current machine
+    platform=$(uname);
+    # If the platform is Linux, try an apt-get to install zsh and then recurse
+    if [[ $platform == 'Linux' ]]; then
+      if [[ -f /etc/redhat-release ]]; then
+        sudo yum install zsh
+        install_zsh
+      fi
+      if [[ -f /etc/debian_version ]]; then
+        sudo apt-get install zsh
+        install_zsh
+      fi
+    # If the platform is OS X, tell the user to install zsh :)
+    elif [[ $platform == 'Darwin' ]]; then
+      echo "We'll install zsh, then re-run this script!"
+      brew install zsh
+      exit
+    fi
+  fi
+}
 function coloredEcho() {
     local exp="$1";
     local color="$2";
@@ -374,21 +404,6 @@ ask_for_confirmation() {
   print_question "$1 (y/n) "
   read -n 1
   printf "\n"
-}
-
-ask_for_sudo() {
-
-  # Ask for the administrator password upfront
-  sudo -v
-
-  # Update existing `sudo` time stamp until this script has finished
-  # https://gist.github.com/cowboy/3118588
-  while true; do
-    sudo -n true
-    sleep 60
-    kill -0 "$$" || exit
-  done &> /dev/null &
-
 }
 
 cmd_exists() {
@@ -480,6 +495,10 @@ while true; do
   esac
 done
 
+# Cloning Dotfiles repository for install_packages_with_brewfile
+# to have access to Brewfile
+clone_dotfiles_repo
+
 # Get the dotfiles directory's absolute path
 SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd -P)"
 DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
@@ -502,11 +521,6 @@ echo "done"
 echo -n "Changing to the $dir directory..."
 cd $dir
 echo "done"
-
-#
-# Actual symlink stuff
-#
-
 
 # Atom editor settings
 echo -n "Copying Atom settings.."
@@ -536,9 +550,9 @@ declare -a FILES_TO_SYMLINK=(
   'git/gitconfig'
   'git/gitignore'
 
-)
+  'vim/vimrc'
 
-# FILES_TO_SYMLINK="$FILES_TO_SYMLINK .vim bin" # add in vim and the binaries
+)
 
 # Move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
 
@@ -551,6 +565,10 @@ done
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 main() {
+  # First things first, asking for sudo credentials
+  ask_for_sudo
+  # Installing Homebrew, the basis of anything and everything
+  install_homebrew
 
   local i=''
   local sourceFile=''
@@ -614,102 +632,70 @@ main() {
   crontab mycron
   rm mycron
 
-}
+  install_zsh
+  change_shell_to_zsh
 
-install_zsh () {
-  # Test to see if zshell is installed.  If it is:
-  if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
-    # Install Oh My Zsh if it isn't already present
-    if [[ ! -d $dir/oh-my-zsh/ ]]; then
-      sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    fi
-    # Set the default shell to zsh if it isn't currently set to zsh
-    if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
-      chsh -s $(which zsh)
-    fi
-  else
-    # If zsh isn't installed, get the platform of the current machine
-    platform=$(uname);
-    # If the platform is Linux, try an apt-get to install zsh and then recurse
-    if [[ $platform == 'Linux' ]]; then
-      if [[ -f /etc/redhat-release ]]; then
-        sudo yum install zsh
-        install_zsh
-      fi
-      if [[ -f /etc/debian_version ]]; then
-        sudo apt-get install zsh
-        install_zsh
-      fi
-    # If the platform is OS X, tell the user to install zsh :)
-    elif [[ $platform == 'Darwin' ]]; then
-      echo "We'll install zsh, then re-run this script!"
-      brew install zsh
-      exit
-    fi
+  # Package managers & packages
+  info "$DOTFILES_DIR/install/brew.sh"
+
+  if [ "$(uname)" == "Darwin" ]; then
+      info "$DOTFILES_DIR/install/brew-cask.sh"
   fi
+
+  # Install Zsh settings
+  ln -s ~/dotfiles/zsh/themes/nick.zsh-theme $HOME/.oh-my-zsh/themes
+
+  # Configuring git config file
+  configure_git
+  # github.com/rupa/z - hooked up in .zshrc
+  # consider reusing your current .z file if possible. it's painful to rebuild :)
+  # or use autojump instead https://github.com/wting/autojump
+  git clone https://github.com/rupa/z.git ~/z
+  chmod +x ~/z/z.sh
+  # Installing powerline-status so that setup_symlinks can setup the symlinks
+  # and requests and dotenv as the basis for a regular python script
+  export PATH=/usr/local/anaconda3/bin:${PATH}
+  pip_packages=(powerline-status requests python-dotenv flake8)
+  pip3_install "${pip_packages[@]}"
+
+  # Setting up symlinks so that setup_vim can install all plugins
+  #setup_symlinks
+  # Setting up Vim
+  setup_vim
+  # Configuring iTerm2
+  configure_iterm2
+
+  # Only use UTF-8 in Terminal.app
+  defaults write com.apple.terminal StringEncodings -array 4
+
+  # Install the Solarized Dark theme for iTerm
+  open "${HOME}/dotfiles/iterm/themes/Solarized Dark.itermcolors"
+
+  # Don’t display the annoying prompt when quitting iTerm
+  defaults write com.googlecode.iterm2 PromptOnQuit -bool false
+
+  # Reload zsh settings
+  source ~/.zshrc
+
+  # Update /etc/hosts
+  update_hosts_file
+  # Setting up macOS defaults
+  # setup_macOS_defaults
+  #sh osx/set-defaults.sh
+  # Updating login items
+  #update_login_items
+
+  # symlink atom
+  ln -s /Applications/Atom.app/Contents/Resources/app/atom.sh /usr/local/bin/atom
+
+  # Copy over Atom configs
+  cp -r atom/packages.list $HOME/.atom
+
+  # Install community packages
+  apm list --installed --bare - get a list of installed packages
+  apm install --packages-file $HOME/.atom/packages.list
+
+
 }
-
-# Package managers & packages
-
-. "$DOTFILES_DIR/install/brew.sh"
-. "$DOTFILES_DIR/install/npm.sh"
-
-if [ "$(uname)" == "Darwin" ]; then
-    . "$DOTFILES_DIR/install/brew-cask.sh"
-fi
 
 main
-install_zsh
-change_shell_to_zsh
-
-# Installing powerline-status so that setup_symlinks can setup the symlinks
-# and requests and dotenv as the basis for a regular python script
-pip_packages=(powerline-status requests python-dotenv flake8)
-pip3_install "${pip_packages[@]}"
-# Setting up symlinks so that setup_vim can install all plugins
-setup_symlinks
-# Setting up Vim
-setup_vim
-# Configuring iTerm2
-configure_iterm2
-# Update /etc/hosts
-update_hosts_file
-# Setting up macOS defaults
-# setup_macOS_defaults
-# Updating login items
-#update_login_items
-
-###############################################################################
-# Atom                                                                        #
-###############################################################################
-
-# Copy over Atom configs
-cp -r atom/packages.list $HOME/.atom
-
-# Install community packages
-apm list --installed --bare - get a list of installed packages
-apm install --packages-file $HOME/.atom/packages.list
-
-###############################################################################
-# Zsh                                                                         #
-###############################################################################
-
-# Install Zsh settings
-ln -s ~/dotfiles/zsh/themes/nick.zsh-theme $HOME/.oh-my-zsh/themes
-
-
-###############################################################################
-# Terminal & iTerm 2                                                          #
-###############################################################################
-
-# Only use UTF-8 in Terminal.app
-defaults write com.apple.terminal StringEncodings -array 4
-
-# Install the Solarized Dark theme for iTerm
-open "${HOME}/dotfiles/iterm/themes/Solarized Dark.itermcolors"
-
-# Don’t display the annoying prompt when quitting iTerm
-defaults write com.googlecode.iterm2 PromptOnQuit -bool false
-
-# Reload zsh settings
-source ~/.zshrc

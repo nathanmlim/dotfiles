@@ -1,35 +1,35 @@
-# Copy paste this file in bit by bit.
-# Don't run it.
-
-echo "Do not run this script in one go. Hit Ctrl-C NOW"
-read -n 1
-
-###############################################################################
-# Backup old machine's dotfiles                                               #
-###############################################################################
-
-mkdir -p ~/migration/home
-cd ~/migration
-
-# then compare brew-list to what's in `brew.sh`
-#   comm <(sort brew-list.txt) <(sort brew.sh-cleaned-up)
-
-# let's hold on to these
-
-cp ~/.extra ~/migration/home
-cp ~/.z ~/migration/home
-cp -R ~/.ssh ~/migration/home
-cp /Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist ~/migration  # wifi
-cp ~/Library/Preferences/net.limechat.LimeChat.plist ~/migration
-cp ~/Library/Preferences/com.tinyspeck.slackmacgap.plist ~/migration
-cp -R ~/Library/Services ~/migration # automator stuff
-cp -R ~/Documents ~/migration
-cp ~/.bash_history ~/migration # back it up for fun?
-cp ~/.gitconfig.local ~/migration
-cp ~/.z ~/migration # z history file.
-
-# sublime text settings
-cp "~/Library/Application Support/Sublime Text 3/Packages" ~/migration
+# # Copy paste this file in bit by bit.
+# # Don't run it.
+#
+# echo "Do not run this script in one go. Hit Ctrl-C NOW"
+# read -n 1
+#
+# ###############################################################################
+# # Backup old machine's dotfiles                                               #
+# ###############################################################################
+#
+# mkdir -p ~/migration/home
+# cd ~/migration
+#
+# # then compare brew-list to what's in `brew.sh`
+# #   comm <(sort brew-list.txt) <(sort brew.sh-cleaned-up)
+#
+# # let's hold on to these
+#
+# cp ~/.extra ~/migration/home
+# cp ~/.z ~/migration/home
+# cp -R ~/.ssh ~/migration/home
+# cp /Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist ~/migration  # wifi
+# cp ~/Library/Preferences/net.limechat.LimeChat.plist ~/migration
+# cp ~/Library/Preferences/com.tinyspeck.slackmacgap.plist ~/migration
+# cp -R ~/Library/Services ~/migration # automator stuff
+# cp -R ~/Documents ~/migration
+# cp ~/.bash_history ~/migration # back it up for fun?
+# cp ~/.gitconfig.local ~/migration
+# cp ~/.z ~/migration # z history file.
+#
+# # sublime text settings
+# cp "~/Library/Application Support/Sublime Text 3/Packages" ~/migration
 
 
 # iTerm settings.
@@ -41,6 +41,24 @@ cp "~/Library/Application Support/Sublime Text 3/Packages" ~/migration
 ###############################################################################
 # XCode Command Line Tools                                                    #
 ###############################################################################
+echo "Checking Xcode..."
+
+if [ ! -d "`xcode-select -p`" ]; then
+   echo -n "Not found... Install it"
+
+   # install Xcode Command Line Tools
+   # https://github.com/chcokr/osx-init/blob/master/install.sh#L33
+   # https://github.com/timsutton/osx-vm-templates/blob/ce8df8a7468faa7c5312444ece1b977c1b2f77a4/scripts/xcode-cli-tools.sh
+   touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress;
+   PROD=$(softwareupdate -l |
+   grep "\*.*Command Line" |
+   head -n 1 | awk -F"*" '{print $2}' |
+   sed -e 's/^ *//' |
+   tr -d '\n')
+   softwareupdate -i "$PROD" -v;
+else
+   echo "OK"
+fi
 
 if ! xcode-select --print-path &> /dev/null; then
 
