@@ -1,5 +1,6 @@
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.oh-my-zsh
+antibody bundle < ~/dotfiles/zsh/zsh_plugins.txt
 
 # Directories to be prepended to $PATH
 declare -a dirs_to_prepend
@@ -47,9 +48,7 @@ for file in $HOME/.{shell_exports,shell_aliases,shell_functions,shell_config}; d
 done;
 unset file;
 
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-  . `brew --prefix`/etc/bash_completion
-fi
+[ -f #{etc}/bash_completion ] && . #{etc}/bash_completion
 
 # Automatically list directory contents on `cd`.
 # auto-ls () {
@@ -71,7 +70,7 @@ zmodload -i zsh/complist
 
 # Source ZSH Plugins
 #source $ZSH/oh-my-zsh.sh
-antibody bundle < ~/dotfiles/zsh/zsh_plugins.txt
+#antibody bundle < ~/dotfiles/zsh/zsh_plugins.txt
 
 
 # Source local extra (private) settings specific to machine if it exists
@@ -80,4 +79,4 @@ antibody bundle < ~/dotfiles/zsh/zsh_plugins.txt
 # Set POWERLEVEL9K themes
 source "$HOME/dotfiles/shell/ztheme"
 source $(dirname $(gem which colorls))/tab_complete.sh
-source "${HOME}/dotfiles/zsh/iterm2_shell_integration.zsh"
+. `${HOME}/dotfiles/zsh/iterm2_shell_integration.zsh`
