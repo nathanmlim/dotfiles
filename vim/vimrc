@@ -1,9 +1,8 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle initialization
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible " use Vim settings, rather than Vi settings
 set rtp+=~/.vim/bundle/Vundle.vim " set the runtime path to include Vundle
-set rtp+=/Users/nathanlim/.local/lib/python3.6/site-packages/powerline/bindings/vim
 set shell=/bin/zsh " set shell to bash explicitly due to fish incompatibility
 let mapleader = "\<Space>" " remap <leader> to <space>
 filetype off
@@ -13,7 +12,6 @@ Plugin 'VundleVim/Vundle.vim'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins list
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plugin 'Valloric/YouCompleteMe' " Code-completion engine
 Plugin 'jiangmiao/auto-pairs' " Insert brackets, parens or quotes in pair
 Plugin 'rafi/awesome-vim-colorschemes' " Collection of color schemes
 Plugin 'vim-syntastic/syntastic' " Syntax checking
@@ -30,11 +28,10 @@ Plugin 'scrooloose/nerdcommenter' " Comment functions
 Plugin 'Vimjas/vim-python-pep8-indent' " A nicer Python indentation style
 Plugin 'wincent/command-t' " Fuzzy file search
 Plugin 'sbdchd/neoformat' " Code formatter
-Plugin 'pangloss/vim-javascript' " Javascript indentation and syntax support
-Plugin 'leafgarland/typescript-vim' " Typescript syntax support, indentation based on pangloss/vim-javascript
-Plugin 'mxw/vim-jsx' " Syntax highlighting and indenting for JSX
 Plugin 'ianks/vim-tsx' " Syntax highlighting and indenting for TSX
-Plugin 'dag/vim-fish' " Syntax highlighting and indenting for Fish scripts
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'dracula/vim'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle finalisation
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -53,21 +50,15 @@ autocmd FileType typescript,javascript UltiSnipsAddFiletypes html
 let g:TerminusMouse = 0
 let g:TerminusAssumeITerm = 1
 
-" ================ Powerline configuration ========================
-silent! python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-set rtp+=~/.local/lib/python3.6/site-packages/powerline/bindings/vim
 " ================ vim-better-whitespace configuration =========================
-autocmd BufEnter * EnableStripWhitespaceOnSave
+" autocmd BufEnter * EnableStripWhitespaceOnSave
 
 " =========== vim-tmux-navigator configuration ====================
 let g:tmux_navigator_disable_when_zoomed = 1
-
-" ================ YouCompleteMe configuration ====================
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-
+let g:airline_powerline_fonts = 1
+let g:airline_theme='onedark'
+let g:onedark_termcolors = 256
+colorscheme onedark
 " ================ Syntastic configuration ========================
 highlight SyntasticError guibg=#2f0000
 let g:syntastic_check_on_open = 0
@@ -222,8 +213,6 @@ set tabstop=4 " number of VISUAL spaces for each tab respresentation
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on " turn on syntax highlighting
-silent! colorscheme dracula " set desired color scheme
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Autogroups
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

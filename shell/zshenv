@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+typeset -U path
+path=(
+    "//anaconda/bin"
+    "/usr/local/bin"
+    "$HOME/.local/bin"
+    "/usr/bin"
+    "/Library/TeX/texbin"
+    "/bin"
+    "/usr/sbin"
+    "/sbin"
+)
+for dir in ${(k)path[@]}
+do
+  if [ -d ${dir} ]; then
+    # If these directories exist, thenrepend them to existing PATH
+    PATH="${dir}:$PATH"
+  fi
+done
+export PATH
