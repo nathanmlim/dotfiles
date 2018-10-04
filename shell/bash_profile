@@ -147,3 +147,4 @@ conda activate
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
+. /usr/local/anaconda3/etc/profile.d/conda.sh

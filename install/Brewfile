@@ -24,7 +24,7 @@ brew "mackup"  # Keep your Mac's application settings in sync
 brew "tree" # Display directories as trees (with optional color/HTML output)
 brew "wget" # Internet file retriever
 brew "z" # Jump around to frequent directories
-
+brew "reattach-to-user-namespace"
 # Apps
 brew "graphviz" # Graph visualization software from AT&T and Bell Labs
 brew "htop" # Improved top (interactive process viewer)
@@ -57,13 +57,11 @@ brew "bash" # Bourne-Again SHell, a UNIX command interpreter
 brew "bash-completion"
 brew "node", link: false # Platform built on V8 to build network applications
 brew "python", link: false
-brew "ruby"
 brew "perl"
 
 # Zsh
-brew "zsh" # UNIX shell (command interpreter)
-brew "getantibody/tap/antibody" # Plugin manager for Zsh
-brew "zsh-lovers" # Tips, tricks, and examples for zsh
+#brew "getantibody/tap/antibody" # Plugin manager for Zsh
+#brew "zsh-lovers" # Tips, tricks, and examples for zsh
 
 # Documents
 brew "pandoc" # Swiss-army knife of markup format conversion

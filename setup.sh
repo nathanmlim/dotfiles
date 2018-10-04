@@ -23,6 +23,59 @@ function ask_for_sudo() {
         exit 1
     fi
 }
+function check_xcode() {
+	echo "Checking Xcode..."
+
+	#if [ ! -d "`xcode-select -p`" ]; then
+  #		echo -n "Not found... Install it"
+
+   	# install Xcode Command Line Tools
+   	# https://github.com/chcokr/osx-init/blob/master/install.sh#L33
+   	# https://github.com/timsutton/osx-vm-templates/blob/ce8df8a7468faa7c5312444ece1b977c1b2f77a4/scripts/xcode-cli-too
+   	touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress;
+   	PROD=$(softwareupdate -l |
+   	grep "\*.*Command Line" |
+   	head -n 1 | awk -F"*" '{print $2}' |
+   	sed -e 's/^ *//' |
+   	tr -d '\n')
+   	softwareupdate -i "$PROD" --verbose;
+#	else
+ #  		echo "OK"
+#	fi
+
+	if ! xcode-select --print-path &> /dev/null; then
+
+  		# Prompt user to install the XCode Command Line Tools
+  		xcode-select --install &> /dev/null
+
+  		# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  		# Wait until the XCode Command Line Tools are installed
+  		until xcode-select --print-path &> /dev/null; do
+    		sleep 5
+  		done
+
+ 		print_result $? 'Install XCode Command Line Tools'
+
+   		# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+     	# Point the `xcode-select` developer directory to
+       	# the appropriate directory from within `Xcode.app`
+        # https://github.com/alrra/dotfiles/issues/13
+
+        sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+        print_result $? 'Make "xcode-select" developer directoryoint to Xcode'
+
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        # Prompt user to agree to the terms of the Xcode license
+        # https://github.com/alrra/dotfiles/issues/10
+
+        sudo xcodebuild -license
+        print_result $? 'Agree with the XCode Command Line Tools licence'
+
+	fi
+}
 
 function login_to_app_store() {
     info "Logging into app store..."
@@ -103,7 +156,7 @@ function change_shell_to_zsh() {
             fi
         fi
         substep "Switching shell to zsh for \"${user}\""
-        if sudo chsh -s /usr/local/bin/zsh "$user"; then
+        if chsh -s /usr/local/bin/zsh "$user"; then
             success "zsh shell successfully set for \"${user}\""
         else
             error "Please try setting the zsh shell again."
@@ -177,31 +230,59 @@ function setup_vim() {
 
 function configure_iterm2() {
     info "Configuring iTerm2..."
+    
+    #info "Enable “focus follows mouse” for Terminal.app and all X11 apps"
+    # i.e. hover over a window and start `typing in it without clicking first
+    defaults write com.apple.terminal FocusFollowsMouse -bool true
+    #defaults write org.x.X11 wm_ffm -bool true
+    info "Installing the Solarized Light theme for iTerm (opening file)"
+    open "$HOME/dotfiles/iterm/themes/TheOne.itermcolors"
+
+    info "Don’t display the annoying prompt when quitting iTerm"
+    defaults write com.googlecode.iterm2 PromptOnQuit -bool false
+    #info "hide tab title bars"
+    #defaults write com.googlecode.iterm2 HideTab -bool true
+    #info "set system-wide hotkey to show/hide iterm with ^\`"
+    #defaults write com.googlecode.iterm2 Hotkey -bool true
+    #info "hide pane titles in split panes"
+    #defaults write com.googlecode.iterm2 ShowPaneTitles -bool false;ok
+    #info "animate split-terminal dimming"
+    #defaults write com.googlecode.iterm2 AnimateDimming -bool true;ok
+    #defaults write com.googlecode.iterm2 HotkeyChar -int 96;
+    #defaults write com.googlecode.iterm2 HotkeyCode -int 50;
+    #defaults write com.googlecode.iterm2 FocusFollowsMouse -int 1;
+    #defaults write com.googlecode.iterm2 HotkeyModifiers -int 262401;
+    #info "setting fonts"
+    #defaults write com.googlecode.iterm2 "Normal Font" -string "Hack-Regular 12";
+    #defaults write com.googlecode.iterm2 "Non Ascii Font" -string "RobotoMonoForPowerline-Regular 12";
+    #info "reading iterm settings"
+    #defaults read -app iTerm > /dev/null 2>&1
     if \
         defaults write com.googlecode.iterm2 \
             LoadPrefsFromCustomFolder -int 1 && \
         defaults write com.googlecode.iterm2 \
-            PrefsCustomFolder -string "${DOTFILES_REPO}/iTerm2";
+            PrefsCustomFolder -string "${DOTFILES_REPO}/iterm";
     then
         success "iTerm2 configuration succeeded."
     else
         error "iTerm2 configuration failed."
         exit 1
     fi
-    substep "Opening iTerm2"
-    if osascript -e 'tell application "iTerm" to activate'; then
-        substep "iTerm2 activation successful"
-    else
-        error "Failed to activate iTerm2"
-        exit 1
-    fi
+    #substep "Opening iTerm2"
+    #if osascript -e 'tell application "iTerm" to activate'; then
+    #    substep "iTerm2 activation successful"
+    #else
+    #    error "Failed to activate iTerm2"
+    #    exit 1
+    #fi
 }
 
 function setup_symlinks() {
     POWERLINE_ROOT_REPO=/usr/local/anaconda3/lib/python3.6/site-packages
-    ln -s ${POWERLINE_ROOT_REPO}/scripts/powerline ~/.local/bin
+    ln -s ${POWERLINE_ROOT_REPO}/scripts/powerline /usr/local/bin
     info "Setting up symlinks..."
     symlink "vim" ${DOTFILES_REPO}/vim/vimrc ~/.vimrc
+    symlink "vim"  ${DOTFILES_REPO}/vim/vimrc ~/.vim/bundle/vim-airline-themes/autoload/airline/themes
     symlink "powerline" \
         ${DOTFILES_REPO}/powerline \
         ${POWERLINE_ROOT_REPO}/powerline/config_files
@@ -496,7 +577,7 @@ done
 
 # Cloning Dotfiles repository for install_packages_with_brewfile
 # to have access to Brewfile
-clone_dotfiles_repo
+#clone_dotfiles_repo
 
 # Get the dotfiles directory's absolute path
 SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd -P)"
@@ -532,19 +613,19 @@ declare -a FILES_TO_SYMLINK=(
 
   'shell/shell_aliases'
   'shell/shell_config'
-  'shell/shell_exports'
   'shell/shell_functions'
   'shell/bash_profile'
   'shell/bash_prompt'
   'shell/bashrc'
   'shell/zshrc'
-  'shell/ztheme'
+  'shell/zshenv'
   'shell/ackrc'
   'shell/curlrc'
   'shell/gemrc'
   'shell/inputrc'
   'shell/screenrc'
-
+  'shell/iterm2_shell_integration.zsh'
+  'shell/zsh_plugins.txt'
   'git/gitattributes'
   'git/gitconfig'
   'git/gitignore'
@@ -566,6 +647,7 @@ done
 main() {
   # First things first, asking for sudo credentials
   ask_for_sudo
+  check_xcode
   # Installing Homebrew, the basis of anything and everything
   install_homebrew
 
@@ -624,22 +706,26 @@ main() {
   ln -fs $HOME/dotfiles/lib/online-check.sh $HOME/online-check.sh
 
   # Write out current crontab
-  crontab -l > mycron
+  #crontab -l > mycron
   # Echo new cron into cron file
-  echo "* * * * * ~/online-check.sh" >> mycron
+  #echo "* * * * * ~/online-check.sh" >> mycron
   # Install new cron file
-  crontab mycron
-  rm mycron
+  #crontab mycron
+  #rm mycron
 
   install_zsh
   change_shell_to_zsh
 
   # Package managers & packages
   info "$DOTFILES_DIR/install/brew.sh"
+  . $DOTFILES_DIR/install/brew.sh
 
   if [ "$(uname)" == "Darwin" ]; then
       info "$DOTFILES_DIR/install/brew-cask.sh"
+      . $DOTFILES_DIR/install/brew-cask.sh
   fi
+  # Install Antibody ZSH Plugin manager
+  curl -sL git.io/antibody | sh -s
 
   # Install Zsh settings
   ln -s ~/dotfiles/zsh/themes/nick.zsh-theme $HOME/.oh-my-zsh/themes
@@ -653,29 +739,23 @@ main() {
   chmod +x ~/z/z.sh
   # Installing powerline-status so that setup_symlinks can setup the symlinks
   # and requests and dotenv as the basis for a regular python script
+  #chsh -s $(which zsh)
+  echo $SHELL
   export PATH=/usr/local/anaconda3/bin:${PATH}
+  which python
+  python -V
   pip install --upgrade pip
   pip_packages=(powerline-status requests python-dotenv flake8)
   pip3_install "${pip_packages[@]}"
-
+  gem install colorls
   # Setting up symlinks so that setup_vim can install all plugins
   setup_symlinks
   # Setting up Vim
   setup_vim
   # Configuring iTerm2
   configure_iterm2
-
-  # Only use UTF-8 in Terminal.app
-  defaults write com.apple.terminal StringEncodings -array 4
-
-  # Install the Solarized Dark theme for iTerm
-  open "${HOME}/dotfiles/iterm/themes/Solarized Dark.itermcolors"
-
-  # Don’t display the annoying prompt when quitting iTerm
-  defaults write com.googlecode.iterm2 PromptOnQuit -bool false
-
   # Reload zsh settings
-  . ~/.zshrc
+  source ~/.zshrc
 
   # # Update /etc/hosts
   # update_hosts_file
